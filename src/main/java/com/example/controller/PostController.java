@@ -1,52 +1,37 @@
 package com.example.controller;
 
-import com.example.exception.NotFoundException;
 import com.example.model.Post;
 import com.example.service.PostService;
-import com.google.gson.Gson;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.Reader;
+import java.util.List;
 
+@RestController
+@RequestMapping("/api/posts")
 public class PostController {
-    public static final String APPLICATION_JSON = "application/json";
     private final PostService service;
 
     public PostController(PostService service) {
         this.service = service;
     }
 
-    public void getAllPosts(HttpServletResponse response) throws IOException {
-        response.setContentType(APPLICATION_JSON);
-        final var data = service.all();
-        final var gson = new Gson();
-        response.getWriter().print(gson.toJson(data));
+    @GetMapping
+    public List<Post> all() {
+        return service.all();
     }
 
-    public void getById(long id, HttpServletResponse response) throws IOException {
-        final var gson = new Gson();
-        final var post = service.getById(id);
-        response.getWriter().print(gson.toJson(post));
+    @GetMapping("/{id}")
+    public Post getById(@PathVariable long id) {
+        return service.getById(id);
     }
 
-    public void save(Reader body, HttpServletResponse response) throws IOException {
-        try {
-            response.setContentType(APPLICATION_JSON);
-            final var gson = new Gson();
-            final var post = gson.fromJson(body, Post.class);
-            final var data = service.save(post);
-            response.getWriter().print(gson.toJson(data));
-        } catch (NotFoundException e) {
-            System.out.println(e.getMessage());
-            response.getWriter().print(e.getMessage());
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
+    @PostMapping
+    public Post save(@RequestBody Post post) {
+        return service.save(post);
     }
 
-    public void removeById(long id, HttpServletResponse response) throws IOException {
-        final var gson = new Gson();
-        response.getWriter().print(gson.toJson(service.getById(id)) + "\n Post was deleted!");
+    @DeleteMapping("/{id}")
+    public void removeById(long id) {
         service.removeById(id);
     }
 }
