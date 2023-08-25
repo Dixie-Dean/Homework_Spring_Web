@@ -28,14 +28,14 @@ public class PostRepository {
     }
 
     public Post save(Post post) {
-        return post.getId() != 0 ? changeOldPost(post) : addNewPost(post);
+        return post.getId() != 0 ? changePost(post) : addPost(post);
     }
 
     public void removeById(long id) {
         postList.removeIf(post -> post.getId() == id);
     }
 
-    private Post changeOldPost(Post post) throws NotFoundException {
+    private Post changePost(Post post) throws NotFoundException {
         if (this.getById(post.getId()).isPresent()) {
             this.getById(post.getId()).get().setContent(post.getContent());
             return post;
@@ -44,7 +44,7 @@ public class PostRepository {
         }
     }
 
-    private Post addNewPost(Post post) {
+    private Post addPost(Post post) {
         post.setId(idCounter.getAndIncrement());
         postList.add(post);
         return post;
