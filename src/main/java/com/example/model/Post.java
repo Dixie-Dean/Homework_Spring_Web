@@ -32,4 +32,8 @@ public class Post {
     public boolean isRemoved() {
         return removed;
     }
+
+    public void remove() {
+        removed = true;
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -46,6 +47,11 @@ public class PostService {
     }
 
     public void removeById(long id) {
-        repository.removeById(id);
+        Post post = repository.getById(id).orElseThrow(NotFoundException::new);
+        if (post.isRemoved()) {
+            throw new NotFoundException();
+        } else {
+            post.remove();
+        }
     }
 }
