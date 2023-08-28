@@ -5,14 +5,6 @@ public class Post {
     private String content;
     private boolean removed;
 
-    public Post() {
-    }
-
-    public Post(long id, String content) {
-        this.id = id;
-        this.content = content;
-    }
-
     public long getId() {
         return id;
     }
