@@ -3,7 +3,7 @@ package com.example.model;
 public class Post {
     private long id;
     private String content;
-    private boolean remove;
+    private boolean removed;
 
     public Post() {
     }
@@ -27,5 +27,9 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isRemoved() {
+        return removed;
     }
 }

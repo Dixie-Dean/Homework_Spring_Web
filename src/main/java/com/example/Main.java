@@ -9,12 +9,12 @@ import java.nio.file.Files;
 
 public class Main {
     public static void main(String[] args) throws LifecycleException, IOException {
-        final var tomcat = new Tomcat();
-        final var baseDir = Files.createTempDirectory("tomcat");
+        final Tomcat tomcat = new Tomcat();
+        final java.nio.file.Path baseDir = Files.createTempDirectory("tomcat");
         baseDir.toFile().deleteOnExit();
         tomcat.setBaseDir(baseDir.toAbsolutePath().toString());
 
-        final var connector = new Connector();
+        final Connector connector = new Connector();
         connector.setPort(8080);
         tomcat.setConnector(connector);
 

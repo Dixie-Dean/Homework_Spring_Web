@@ -1,7 +1,7 @@
 package com.example.service;
 
 import com.example.exception.NotFoundException;
-import com.example.mapper.Mapper;
+import com.example.mapper.PostMapper;
 import com.example.model.Post;
 import com.example.model.PostDTO;
 import com.example.repository.PostRepository;
@@ -13,28 +13,36 @@ import java.util.List;
 @Service
 public class PostService {
     private final PostRepository repository;
-    private final Mapper mapper;
+    private final PostMapper postMapper;
 
-    public PostService(PostRepository repository, Mapper mapper) {
+    public PostService(PostRepository repository, PostMapper postMapper) {
         this.repository = repository;
-        this.mapper = mapper;
+        this.postMapper = postMapper;
     }
 
     public List<PostDTO> all() {
         List<PostDTO> postDTOList = new ArrayList<>();
         for (Post post : repository.all()) {
-            postDTOList.add(mapper.postToDto(post));
+            if (post.isRemoved()) {
+                continue;
+            }
+            postDTOList.add(postMapper.postToDto(post));
         }
         return postDTOList;
     }
 
     public PostDTO getById(long id) {
-        return mapper.postToDto(repository.getById(id).orElseThrow(NotFoundException::new));
+        Post post = repository.getById(id).orElseThrow(NotFoundException::new);
+        if (post.isRemoved()) {
+            throw new NotFoundException();
+        } else {
+            return postMapper.postToDto(repository.getById(id).orElseThrow(NotFoundException::new));
+        }
     }
 
     public PostDTO save(Post post) throws NotFoundException {
         repository.save(post);
-        return mapper.postToDto(post);
+        return postMapper.postToDto(post);
     }
 
     public void removeById(long id) {

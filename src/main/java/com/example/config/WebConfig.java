@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 public class WebConfig {
     @Bean
     public RequestMappingHandlerAdapter requestMappingHandlerAdapter() {
-        final var bean = new RequestMappingHandlerAdapter();
+        final RequestMappingHandlerAdapter bean = new RequestMappingHandlerAdapter();
         bean.getMessageConverters().add(new GsonHttpMessageConverter());
         return bean;
     }
