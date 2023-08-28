@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.exception.NotFoundException;
 import com.example.model.Post;
+import com.example.model.PostDTO;
 import com.example.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +16,16 @@ public class PostService {
         this.repository = repository;
     }
 
-    public List<Post> all() {
-        return repository.all();
+    public List<PostDTO> all() {
+//        return repository.all();
     }
 
-    public Post getById(long id) {
-        return repository.getById(id).orElseThrow(NotFoundException::new);
+    public PostDTO getById(long id) {
+//        return repository.getById(id).orElseThrow(NotFoundException::new);
     }
 
-    public Post save(Post post) throws NotFoundException {
-        return repository.save(post);
+    public PostDTO save(Post post) throws NotFoundException {
+//        return repository.save(post);
     }
 
     public void removeById(long id) {

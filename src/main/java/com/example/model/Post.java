@@ -3,6 +3,7 @@ package com.example.model;
 public class Post {
     private long id;
     private String content;
+    private boolean remove;
 
     public Post() {
     }
