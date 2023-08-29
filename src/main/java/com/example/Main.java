@@ -6,11 +6,12 @@ import org.apache.catalina.startup.Tomcat;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Main {
     public static void main(String[] args) throws LifecycleException, IOException {
         final Tomcat tomcat = new Tomcat();
-        final java.nio.file.Path baseDir = Files.createTempDirectory("tomcat");
+        final Path baseDir = Files.createTempDirectory("tomcat");
         baseDir.toFile().deleteOnExit();
         tomcat.setBaseDir(baseDir.toAbsolutePath().toString());
 
