@@ -1,9 +1,8 @@
 package com.example.model;
 
-public class Post {
+public class PostDTO {
     private long id;
     private String content;
-    private boolean removed;
 
     public long getId() {
         return id;
@@ -19,13 +18,5 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public boolean isRemoved() {
-        return removed;
-    }
-
-    public void remove() {
-        removed = true;
     }
 }

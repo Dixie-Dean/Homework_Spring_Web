@@ -31,10 +31,6 @@ public class PostRepository {
         return post.getId() != 0 ? changePost(post) : addPost(post);
     }
 
-    public void removeById(long id) {
-        postList.removeIf(post -> post.getId() == id);
-    }
-
     private Post changePost(Post post) throws NotFoundException {
         if (this.getById(post.getId()).isPresent()) {
             this.getById(post.getId()).get().setContent(post.getContent());

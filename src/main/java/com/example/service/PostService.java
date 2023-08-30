@@ -1,33 +1,56 @@
 package com.example.service;
 
 import com.example.exception.NotFoundException;
+import com.example.mapper.PostMapper;
 import com.example.model.Post;
+import com.example.model.PostDTO;
 import com.example.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PostService {
     private final PostRepository repository;
+    private final PostMapper postMapper;
 
-    public PostService(PostRepository repository) {
+    public PostService(PostRepository repository, PostMapper postMapper) {
         this.repository = repository;
+        this.postMapper = postMapper;
     }
 
-    public List<Post> all() {
-        return repository.all();
+    public List<PostDTO> all() {
+        List<PostDTO> postDTOList = new ArrayList<>();
+        for (Post post : repository.all()) {
+            if (post.isRemoved()) {
+                continue;
+            }
+            postDTOList.add(postMapper.postToDto(post));
+        }
+        return postDTOList;
     }
 
-    public Post getById(long id) {
-        return repository.getById(id).orElseThrow(NotFoundException::new);
+    public PostDTO getById(long id) {
+        Post post = repository.getById(id).orElseThrow(NotFoundException::new);
+        if (post.isRemoved()) {
+            throw new NotFoundException();
+        } else {
+            return postMapper.postToDto(repository.getById(id).orElseThrow(NotFoundException::new));
+        }
     }
 
-    public Post save(Post post) throws NotFoundException {
-        return repository.save(post);
+    public PostDTO save(Post post) throws NotFoundException {
+        repository.save(post);
+        return postMapper.postToDto(post);
     }
 
     public void removeById(long id) {
-        repository.removeById(id);
+        Post post = repository.getById(id).orElseThrow(NotFoundException::new);
+        if (post.isRemoved()) {
+            throw new NotFoundException();
+        } else {
+            post.remove();
+        }
     }
 }
