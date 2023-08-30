@@ -9,12 +9,12 @@ import javax.servlet.ServletContext;
 public class ApplicationInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) {
-        final AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        final var context = new AnnotationConfigWebApplicationContext();
         context.scan("com.example");
         context.refresh();
 
-        final DispatcherServlet servlet = new DispatcherServlet(context);
-        final javax.servlet.ServletRegistration.Dynamic registration = servletContext.addServlet("app", servlet);
+        final var servlet = new DispatcherServlet(context);
+        final var registration = servletContext.addServlet("app", servlet);
         registration.setLoadOnStartup(1);
         registration.addMapping("/");
     }
